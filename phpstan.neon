@@ -1,0 +1,9 @@
+parameters:
+    level: 6
+    paths:
+        - src
+        - tests
+    ignoreErrors:
+        -
+            identifier: property.unusedType
+            path: src/DTO/*

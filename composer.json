@@ -1,0 +1,54 @@
+{
+    "name": "wrdev/atol-v4-client",
+    "description": "ATOL Online API V4 client for PHP",
+    "keywords": ["atol", "atol-online", "fiscalization", "kkt", "ofd", "receipt", "php"],
+    "homepage": "https://github.com/WrabbidDev/atol-v4-client",
+    "type": "library",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/WrabbidDev/atol-v4-client/issues",
+        "source": "https://github.com/WrabbidDev/atol-v4-client"
+    },
+    "authors": [
+        {
+            "name": "Vlad G.",
+            "email": "dev.wrabbid@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": "^8.2",
+        "jms/serializer": "^3.31",
+        "symfony/property-access": "^7.0",
+        "symfony/property-info": "^7.0",
+        "symfony/validator": "^7.0",
+        "guzzlehttp/guzzle": "^7.5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.4",
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "phpstan/phpstan": "^2.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "WrDev\\AtolV4Client\\": "src/"
+        },
+        "classmap": ["src/"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WrDev\\AtolV4Client\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --colors=always",
+        "analyse": "phpstan analyse --memory-limit=1G",
+        "cs-check": "php-cs-fixer fix --dry-run --diff --verbose",
+        "cs-fix": "php-cs-fixer fix --verbose"
+    },
+    "config": {
+        "platform": {
+            "php": "8.2"
+        }
+    }
+}
