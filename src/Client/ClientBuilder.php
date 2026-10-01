@@ -8,6 +8,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
 use InvalidArgumentException;
 use WrDev\AtolV4Client\Client;
+use WrDev\AtolV4Client\Factory\ResponseFactory;
 
 final class ClientBuilder
 {
@@ -26,6 +27,7 @@ final class ClientBuilder
         $copy = clone $this;
         $copy->login = $login;
         $copy->password = $password;
+
         return $copy;
     }
 
@@ -33,6 +35,7 @@ final class ClientBuilder
     {
         $copy = clone $this;
         $copy->groupCode = $groupCode;
+
         return $copy;
     }
 
@@ -40,6 +43,7 @@ final class ClientBuilder
     {
         $copy = clone $this;
         $copy->baseUri = self::TEST_URL;
+
         return $copy;
     }
 
@@ -47,6 +51,7 @@ final class ClientBuilder
     {
         $copy = clone $this;
         $copy->baseUri = rtrim($baseUri, '/') . '/';
+
         return $copy;
     }
 
@@ -54,6 +59,7 @@ final class ClientBuilder
     {
         $copy = clone $this;
         $copy->httpClient = $httpClient;
+
         return $copy;
     }
 
@@ -61,6 +67,7 @@ final class ClientBuilder
     {
         $copy = clone $this;
         $copy->tokenTransport = GuzzleApiClient::TOKEN_IN_HEADER;
+
         return $copy;
     }
 
@@ -68,6 +75,7 @@ final class ClientBuilder
     {
         $copy = clone $this;
         $copy->tokenTransport = GuzzleApiClient::TOKEN_IN_QUERY;
+
         return $copy;
     }
 
@@ -78,10 +86,18 @@ final class ClientBuilder
         }
 
         $http = $this->httpClient ?? new GuzzleClient(['base_uri' => $this->baseUri]);
+
+        $validator = Client::createDefaultValidator();
+        $serializer = Client::createDefaultSerializer();
+        $responseFactory = new ResponseFactory($serializer, $validator);
+
         return new Client(
             new GuzzleApiClient($http, $this->tokenTransport),
             new TokenProvider($this->login, $this->password),
             $this->groupCode,
+            $validator,
+            $serializer,
+            $responseFactory,
         );
     }
 }

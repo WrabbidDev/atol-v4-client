@@ -18,18 +18,23 @@ final class ReportResponse
     private ?string $uuid = null;
 
     #[Serializer\Type("string")]
+    #[Serializer\SerializedName("group_code")]
     private ?string $groupCode = null;
 
     #[Serializer\Type("string")]
+    #[Serializer\SerializedName("daemon_code")]
     private ?string $daemonCode = null;
 
     #[Serializer\Type("string")]
+    #[Serializer\SerializedName("device_code")]
     private ?string $deviceCode = null;
 
     #[Serializer\Type("string")]
+    #[Serializer\SerializedName("callback_url")]
     private ?string $callbackUrl = null;
 
     #[Serializer\Type("string")]
+    #[Serializer\SerializedName("external_id")]
     private ?string $externalId = null;
 
     #[Serializer\Type("WrDev\AtolV4Client\DTO\Shared\Warnings")]

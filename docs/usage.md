@@ -15,6 +15,7 @@ use WrDev\AtolV4Client\DTO\Register\PaymentObject;
 use WrDev\AtolV4Client\DTO\Register\PaymentType;
 use WrDev\AtolV4Client\DTO\Register\Receipt;
 use WrDev\AtolV4Client\DTO\Register\RegisterRequest;
+use WrDev\AtolV4Client\DTO\Register\Service;
 use WrDev\AtolV4Client\DTO\Register\Sno;
 use WrDev\AtolV4Client\DTO\Register\Vat;
 use WrDev\AtolV4Client\DTO\Register\VatType;
@@ -40,12 +41,14 @@ $item = (new Item(
 
 $payment = new Payment(PaymentType::ELECTRONIC, 100.00);
 $receipt = new Receipt($customer, $company, [$item], [$payment], 100.00);
+$service = new Service('https://shop.example.com/atol-callback');
 
 $request = new RegisterRequest(
     externalId: 'order-10001',
     receipt: $receipt,
     timestamp: new DateTime('now', new DateTimeZone('Europe/Moscow'))
 );
+$request->setService($service);
 
 $registerResponse = $client->sell($request);
 $uuid = $registerResponse->getUuid();
@@ -76,4 +79,22 @@ $client = (new ClientBuilder())
     ->setGroupCode('your-group-code')
     ->useTokenInQuery()
     ->build();
+```
+
+## Обработка callback payload
+
+Для callback payload используйте `ResponseFactory::createCallbackResponse()`.
+Тип бизнес-операции (`sell`, `sell_refund`, `sell_correction` и т.д.) определяйте по своим данным,
+сохраненным при отправке чека (например, по `uuid` или `external_id`), а не по форме callback payload.
+
+```php
+use WrDev\AtolV4Client\Client;
+use WrDev\AtolV4Client\Factory\ResponseFactory;
+
+$validator = Client::createDefaultValidator();
+$serializer = Client::createDefaultSerializer();
+$responseFactory = new ResponseFactory($serializer, $validator);
+
+/** @var array<string, mixed> $payload */
+$callbackResponse = $responseFactory->createCallbackResponse($payload);
 ```

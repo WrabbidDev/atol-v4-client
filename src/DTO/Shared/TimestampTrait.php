@@ -13,6 +13,7 @@ use JMS\Serializer\Annotation as Serializer;
 trait TimestampTrait
 {
     #[Serializer\Type("DateTime<'d.m.Y H:i:s', 'Europe/Moscow'>")]
+    #[Serializer\SerializedName("timestamp")]
     private \DateTime $timestamp;
 
     /**
